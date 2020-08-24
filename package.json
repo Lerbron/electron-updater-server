@@ -1,12 +1,12 @@
 {
   "name": "electron-update-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
     "compare-versions": "^3.6.0",
     "koa": "^2.12.0",
-    "koa-router": "^9.0.1",
+    "koa-router": "^9.4.0",
     "koa-static-server": "^1.5.2"
   }
 }
