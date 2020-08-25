@@ -2,6 +2,8 @@ const Koa = require('koa')
 const Router = require('koa-router')
 const serve = require('koa-static-server')
 const compareVersions = require('compare-versions')
+const multer = require('koa-multer')
+const uploadCrash = multer({dest: 'crash/'})
 
 const app = new Koa()
 const router = new Router()
@@ -13,10 +15,10 @@ app.use(serve({
 
 const getNewVersions = (version) => {
   const newVersion = {
-    name: '0.1.1',
+    name: '1.0.2',
     pub_date: '2020-05-30T21:30:30+1:00',
     notes: "新增功能",
-    url: 'http://127.0.0.1:3385/public/electronVue-0.1.1-mac.zip'
+    url: 'http://127.0.0.1:3385/public/electronReact-1.0.2-mac.zip'
   }
 
   if (compareVersions(newVersion.name, version, ">")) {
@@ -24,6 +26,11 @@ const getNewVersions = (version) => {
   }
   return null
 }
+
+router.post('/crash', uploadCrash.single('upload_file_minidump'), (ctx, next) => {
+  console.log(ctx.req.body)
+  // 存DB
+})
 
 router.get('/darwin', (ctx, next) => {
   // 处理mac更新
@@ -49,9 +56,9 @@ router.get('/win32/RELEASES', (ctx, next) => {
   }
 })
 
-// router.get('/win32/*.nupkg', (ctx, next) => {
-//   ctx.redirect(`/public/${ctx.params[0]}.nupkg`)
-// })
+ router.get('/win32/*.nupkg', (ctx, next) => {
+   ctx.redirect(`/public/${ctx.params[0]}.nupkg`)
+ })
 
 app.use(router.routes())
   .use(router.allowedMethods())
